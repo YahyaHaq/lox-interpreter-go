@@ -16,8 +16,6 @@ func main() {
 
 	command := os.Args[1]
 
-	fmt.Fprintln(os.Stderr, "args ", os.Args)
-
 	if command != "tokenize" {
 		fmt.Fprintf(os.Stderr, "Unknown command: %s\n", command)
 		os.Exit(1)
@@ -32,11 +30,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Fprintln(os.Stderr, "file contents ", fileContents)
-
-	if len(fileContents) > 0 {
-		panic("Scanner not implemented")
-	} else {
-		fmt.Println("EOF  null") // Placeholder, remove this line when implementing the scanner
+	for _, char := range fileContents {
+		switch char {
+		case '(':
+			fmt.Println("LEFT_PAREN ( null")
+		case ')':
+			fmt.Println("RIGHT_PAREN ) null")
+		}
 	}
+
+	fmt.Println("EOF  null")
 }
