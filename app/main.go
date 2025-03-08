@@ -16,6 +16,8 @@ func main() {
 
 	command := os.Args[1]
 
+	fmt.Fprintln(os.Stderr, "args ", os.Args)
+
 	if command != "tokenize" {
 		fmt.Fprintf(os.Stderr, "Unknown command: %s\n", command)
 		os.Exit(1)
@@ -29,6 +31,8 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error reading file: %v\n", err)
 		os.Exit(1)
 	}
+
+	fmt.Fprintln(os.Stderr, "file contents ", fileContents)
 
 	if len(fileContents) > 0 {
 		panic("Scanner not implemented")
