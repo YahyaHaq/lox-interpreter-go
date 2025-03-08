@@ -30,6 +30,8 @@ func main() {
 		os.Exit(1)
 	}
 
+	LexicalErrorPresent := false
+
 	for _, char := range fileContents {
 		switch char {
 		case '(':
@@ -52,8 +54,16 @@ func main() {
 			fmt.Println("STAR * null")
 		case ';':
 			fmt.Println("SEMICOLON ; null")
+		default:
+			LexicalErrorPresent = true
+			fmt.Fprintf(os.Stderr, "[line 1] Error: Unexpected character: %c\n", char)
 		}
 	}
 
 	fmt.Println("EOF  null")
+
+	if LexicalErrorPresent {
+		os.Exit(65)
+	}
+	os.Exit(0)
 }
