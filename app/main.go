@@ -30,6 +30,8 @@ func main() {
 		os.Exit(1)
 	}
 
+	fmt.Fprintf(os.Stderr, "file contents: %v\n", fileContents)
+
 	errorCode := 0
 	idx := 0
 	lineEnd := false
@@ -37,6 +39,8 @@ func main() {
 		char := fileContents[idx]
 
 		switch char {
+		case ' ':
+			// Skip whitespace
 		case '(':
 			fmt.Println("LEFT_PAREN ( null")
 		case ')':
@@ -99,6 +103,10 @@ func main() {
 			} else {
 				fmt.Println("SLASH / null")
 			}
+		case '\n':
+			// do nothing for newline
+		case '\t':
+			// do nothing for tab
 		default:
 			errorCode = 65
 			fmt.Fprintf(os.Stderr, "[line 1] Error: Unexpected character: %c\n", char)
