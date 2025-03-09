@@ -65,6 +65,14 @@ func main() {
 			} else {
 				fmt.Println("EQUAL = null")
 			}
+		case '!':
+			// case of ' !='
+			if idx+1 < len(fileContents) && fileContents[idx+1] == '=' {
+				fmt.Println("BANG_EQUAL != null")
+				idx++ // we will move 2 characters ahead in this case
+			} else {
+				fmt.Println("BANG ! null")
+			}
 		default:
 			errorCode = 65
 			fmt.Fprintf(os.Stderr, "[line 1] Error: Unexpected character: %c\n", char)
