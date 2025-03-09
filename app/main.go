@@ -30,9 +30,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	LexicalErrorPresent := false
+	errorCode := 0
+	idx := 0
 
-	for _, char := range fileContents {
+	for idx < len(fileContents) {
+		char := fileContents[idx]
+
 		switch char {
 		case '(':
 			fmt.Println("LEFT_PAREN ( null")
@@ -54,16 +57,21 @@ func main() {
 			fmt.Println("STAR * null")
 		case ';':
 			fmt.Println("SEMICOLON ; null")
+		case '=':
+			// case of '=='
+			if idx+1 < len(fileContents) && fileContents[idx+1] == '=' {
+				fmt.Println("EQUAL_EQUAL == null")
+				idx++ // we will move 2 characters ahead in this case
+			} else {
+				fmt.Println("EQUAL = null")
+			}
 		default:
-			LexicalErrorPresent = true
+			errorCode = 65
 			fmt.Fprintf(os.Stderr, "[line 1] Error: Unexpected character: %c\n", char)
 		}
+		idx++
 	}
 
 	fmt.Println("EOF  null")
-
-	if LexicalErrorPresent {
-		os.Exit(65)
-	}
-	os.Exit(0)
+	os.Exit(errorCode)
 }
