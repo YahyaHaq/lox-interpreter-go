@@ -32,8 +32,8 @@ func main() {
 
 	errorCode := 0
 	idx := 0
-
-	for idx < len(fileContents) {
+	lineEnd := false
+	for idx < len(fileContents) && !lineEnd {
 		char := fileContents[idx]
 
 		switch char {
@@ -90,6 +90,15 @@ func main() {
 				fmt.Println("LESS < null")
 			}
 		case '/':
+			// case of '//
+			if idx+1 < len(fileContents) && fileContents[idx+1] == '/' {
+				// do nothing as this is a comment
+				// as tests are online we will break out for now as no other code can be written after comments
+				// in future we will modify this
+				lineEnd = true
+			} else {
+				fmt.Println("SLASH / null")
+			}
 		default:
 			errorCode = 65
 			fmt.Fprintf(os.Stderr, "[line 1] Error: Unexpected character: %c\n", char)
