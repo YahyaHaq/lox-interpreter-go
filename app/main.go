@@ -34,9 +34,17 @@ func main() {
 
 	errorCode := 0
 	idx := 0
-	lineEnd := false
-	for idx < len(fileContents) && !lineEnd {
+	lineNo := 1
+
+	var comment bool
+
+	for idx < len(fileContents) {
 		char := fileContents[idx]
+
+		if comment && char != '\n' {
+			idx++
+			continue
+		}
 
 		switch char {
 		case ' ':
@@ -99,17 +107,18 @@ func main() {
 				// do nothing as this is a comment
 				// as tests are online we will break out for now as no other code can be written after comments
 				// in future we will modify this
-				lineEnd = true
+				comment = true
 			} else {
 				fmt.Println("SLASH / null")
 			}
 		case '\n':
-			// do nothing for newline
+			comment = false
+			lineNo++
 		case '\t':
 			// do nothing for tab
 		default:
 			errorCode = 65
-			fmt.Fprintf(os.Stderr, "[line 1] Error: Unexpected character: %c\n", char)
+			fmt.Fprintf(os.Stderr, "[line %d] Error: Unexpected character: %c\n", lineNo, char)
 		}
 		idx++
 	}
