@@ -111,6 +111,13 @@ func main() {
 			} else {
 				fmt.Println("SLASH / null")
 			}
+		case '"':
+			// string literal
+			idx, err = parseStrings(fileContents, idx+1)
+			if err != nil {
+				errorCode = 65
+				fmt.Fprintf(os.Stderr, "[line %d] Error: Unterminated string.", lineNo)
+			}
 		case '\n':
 			comment = false
 			lineNo++
@@ -125,4 +132,21 @@ func main() {
 
 	fmt.Println("EOF  null")
 	os.Exit(errorCode)
+}
+
+func parseStrings(content []byte, idx int) (int, error) {
+	start := idx
+	for idx < len(content) && content[idx] != '"' {
+		idx++
+	}
+	if idx >= len(content) {
+		return idx, fmt.Errorf("Unterminated string literal")
+	}
+
+	// fmt.Println("content: ", string(content))
+	// fmt.Println("start: ", start)
+	// fmt.Println("idx: ", idx)
+	msg := fmt.Sprintf(`STRING "%s" %s`, string(content[start:idx]), string(content[start:idx]))
+	fmt.Println(msg)
+	return idx, nil
 }
